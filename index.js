@@ -49,6 +49,7 @@ async function run() {
     const database = client.db("LanguageMasterDB");
     const LMInstructors = database.collection("LMInstructors");
     const LMCourses = database.collection("LMCourses");
+    const LMUserCarts = database.collection("LMUserCarts");
 
 
     app.get("/instructors", async(req, res)=>{
@@ -65,6 +66,13 @@ async function run() {
         res.send(courses);
     })
 
+    //select to my cart 
+    app.post("/course/:email", async(req, res)=>{
+      const cart = req.body;
+      const result = await LMUserCarts.insertOne(cart);
+      console.log(cart)
+      res.send(result)
+    })
 
 
     // Send a ping to confirm a successful connection

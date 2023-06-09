@@ -1,59 +1,38 @@
 [
   {
-    "image": "https://i.ibb.co/nnwLnM3/london-england-credit-tomas-marek-istock.jpg",
-    "name": "English",
-    "instructor": "John Doe",
-    "instructorMail": "john@gmail.com",
-    "availableSeats": 10,
-    "price": 99.99
+    "name": "John Doe",
+    "email": "john@gmail.com",
+    "photo": "https://i.ibb.co/vQnQzDV/ins4.jpg",
+    "designation": "Instructor"
   },
   {
-    "image": "https://i.ibb.co/tLQNdCz/Eiffel-Tower-Day-1200x834.jpg",
-    "name": "France",
-    "instructor": "Jane Smith",
-    "instructorMail": "jane@gmail.com",
-    "availableSeats": 5,
-    "price": 149.99
+    "name": "Jane Smith",
+    "email": "jane@gmail.com",
+    "photo": "https://i.ibb.co/ZXLW8Ys/ins6.jpg",
+    "designation": "Instructor"
   },
   {
-    "image": "https://i.ibb.co/ynmFkJY/germanfood.jpg",
-    "name": "German",
-    "instructor": "Alice Johnson",
-    "instructorMail": "alice@gmail.com",
-    "availableSeats": 20,
-    "price": 79.99
+    "name": "Alice Johnson",
+    "email": "alice@gmail.com",
+    "photo": "https://i.ibb.co/RvKhFmP/ins5.jpg",
+    "designation": "Instructor"
   },
   {
-    "image": "https://i.ibb.co/vhY7G1V/bullfighting-in-spain.jpg",
-    "name": "Spanish",
-    "instructor": "Eve Davis",
-    "instructorMail": "eve@gmail.com",
-    "availableSeats": 15,
-    "price": 89.99
+    "name": "Nancy Williams",
+    "email": "nancy@gmail.com",
+    "photo": "https://i.ibb.co/mSthCMQ/ins3.webp",
+    "designation": "Instructor"
   },
   {
-    "image": "https://i.ibb.co/ZWgMyx4/arab-Desert.jpg",
-    "name": "Arabic",
-    "instructor": "Bob Williams",
-    "instructorMail": "bob@gmail.com",
-    "availableSeats": 8,
-    "price": 119.99
-  },
-  
-  {
-    "image": "https://i.ibb.co/w4R8X28/Great-Wall-Of-China.jpg",
-    "name": "China",
-    "instructor": "Michael Brown",
-    "instructorMail": "michael@gmail.com",
-    "availableSeats": 12,
-    "price": 69.99
+    "name": "Eve Davis",
+    "email": "eve@gmail.com",
+    "photo": "https://i.ibb.co/ZXK8byn/ins1.webp",
+    "designation": "Instructor"
   },
   {
-    "image": "https://www.daily-sun.com/assets/news_images/2021/02/19/shahid_minar.jpg",
-    "name": "Bangla",
-    "instructor": "Sarah Wilson",
-    "instructorMail": "sarah@gmail.com",
-    "availableSeats": 18,
-    "price": 50
+    "name": "Laura",
+    "email": "laura@gmail.com",
+    "photo": "https://i.ibb.co/gMHHp30/ins2.jpg",
+    "designation": "Instructor"
   }
 ]
