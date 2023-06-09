@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.LM_USER}:${process.env.LM_PASS}@cluster0.bna95n2.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -72,6 +72,24 @@ async function run() {
       const result = await LMUserCarts.insertOne(cart);
       console.log(cart)
       res.send(result)
+    })
+
+    app.delete("/course/:id", async(req, res)=>{
+      const id = req.params;
+      const query = {_id: new ObjectId(id)}
+
+      const result = await LMUserCarts.deleteOne(query);
+      // console.log(cart)
+      res.send(result)
+    })
+
+    app.get("/my-selected-course", async(req, res)=>{
+      const email = req.params;
+      // console.log(email);
+      const query = {};
+        const cursor = LMUserCarts.find(query);
+        const courses = await cursor.toArray();
+        res.send(courses);
     })
 
 
