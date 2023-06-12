@@ -185,6 +185,39 @@ async function run() {
       res.send(result);
     })
 
+    // single class data by id 
+    app.get("/class/:id", async(req, res)=>{
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+
+      const result= await LMCourses.findOne(query)
+      res.send(result);
+      // console.log(id, result)
+    })
+
+    // update a class 
+    app.patch("/update-class/:id", async(req, res)=>{
+      const id = req.params.id;
+      const newClass = req.body;
+      console.log("new",newClass)
+
+
+      const filter = { _id: new ObjectId(id)};
+      const options = { upsert: true };
+
+    const updateDoc = {
+      $set: {
+        image: newClass.image,
+        price: newClass.price,
+        name: newClass.name,
+        availableSeats: newClass.availableSeats
+      },
+    };
+    const result = await LMCourses.updateOne(filter, updateDoc, options);
+    res.send(result)
+    })
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
