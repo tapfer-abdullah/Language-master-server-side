@@ -62,7 +62,14 @@ async function run() {
 
     app.post("/user", async(req, res)=>{
       const user = req.body;
-      // const qu
+      const query = {email: user.email}
+
+      const existingUser = await LMInstructors.findOne(query);
+
+      if(existingUser){
+        return res.send({message: "User already exist!"});
+      }
+
       const result = await LMInstructors.insertOne(user);
       console.log(user)
       res.send(result)
