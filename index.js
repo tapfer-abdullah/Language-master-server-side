@@ -52,44 +52,59 @@ async function run() {
     const LMUserCarts = database.collection("LMUserCarts");
 
 
-    app.get("/instructors", async(req, res)=>{
-      const query = {};
-        const cursor = LMInstructors.find(query);
-        const instructors = await cursor.toArray();
-        res.send(instructors);
+    // users and instructors 
+    app.get("/instructors", async (req, res) => {
+      const query = {designation: "Instructor"};
+      const cursor = LMInstructors.find(query);
+      const instructors = await cursor.toArray();
+      res.send(instructors);
     })
 
-    app.get("/courses", async(req, res)=>{
+    app.post("/user", async(req, res)=>{
+      const user = req.body;
+      // const qu
+      const result = await LMInstructors.insertOne(user);
+      console.log(user)
+      res.send(result)
+      
+    })
+
+    app.get("/courses", async (req, res) => {
       const query = {};
-        const cursor = LMCourses.find(query);
-        const courses = await cursor.toArray();
-        res.send(courses);
+      const cursor = LMCourses.find(query);
+      const courses = await cursor.toArray();
+      res.send(courses);
     })
 
     //select to my cart 
-    app.post("/course/:email", async(req, res)=>{
+    app.post("/course/:email", async (req, res) => {
       const cart = req.body;
       const result = await LMUserCarts.insertOne(cart);
       console.log(cart)
       res.send(result)
     })
 
-    app.delete("/course/:id", async(req, res)=>{
+    app.delete("/course/:id", async (req, res) => {
       const id = req.params;
-      const query = {_id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) }
 
       const result = await LMUserCarts.deleteOne(query);
       // console.log(cart)
       res.send(result)
     })
 
-    app.get("/my-selected-course", async(req, res)=>{
-      const email = req.params;
-      // console.log(email);
-      const query = {};
-        const cursor = LMUserCarts.find(query);
-        const courses = await cursor.toArray();
-        res.send(courses);
+    app.get("/my-selected-course", async (req, res) => {
+      let query = req.query || {};
+
+      console.log(query);
+
+      if (query) {
+        query = { status: query.status, email: query.email };
+      }
+
+      const cursor = LMUserCarts.find(query);
+      const courses = await cursor.toArray();
+      res.send(courses);
     })
 
 
@@ -110,6 +125,6 @@ run().catch(console.dir);
 //   res.send(language)
 // })
 
-app.listen(port, ()=>{
-    console.log("Assignment 12 is running on port: ",port)
+app.listen(port, () => {
+  console.log("Assignment 12 is running on port: ", port)
 })
