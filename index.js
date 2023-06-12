@@ -117,7 +117,8 @@ async function run() {
 
 
 
-    // admin options 
+    // admin options------------
+    //--------------------------
     app.get("/users", async (req, res) => {
       const query = {};
 
@@ -172,9 +173,17 @@ async function run() {
     };
     const result = await LMCourses.updateOne(filter, updateDoc, options);
     res.send(result)
-
     })
 
+    // Instructor options ------------
+    // -------------------------------------
+    app.post("/add-class", async(req, res)=>{
+      const newClass = req.body;
+      console.log(newClass)
+
+      const result = await LMCourses.insertOne(newClass);
+      res.send(result);
+    })
 
 
     // Send a ping to confirm a successful connection
