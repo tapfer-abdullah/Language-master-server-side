@@ -218,6 +218,43 @@ async function run() {
     })
 
 
+    app.patch("/course/:id", async(req, res)=>{
+      const id = req.params.id;
+      const newClass = req.body;
+      console.log("new",newClass)
+
+
+      const filter = { _id: new ObjectId(id)};
+      const options = { upsert: true };
+
+    const updateDoc = {
+      $set: {
+        enrolled: newClass.enrolled
+      },
+    };
+    const result = await LMCourses.updateOne(filter, updateDoc, options);
+    res.send(result)
+    })
+
+    app.patch("/course-feedback/:id", async(req, res)=>{
+      const id = req.params.id;
+      const newClass = req.body;
+      console.log("new",newClass)
+
+
+      const filter = { _id: new ObjectId(id)};
+      const options = { upsert: true };
+
+    const updateDoc = {
+      $set: {
+        feedback: newClass.feedback
+      },
+    };
+    const result = await LMCourses.updateOne(filter, updateDoc, options);
+    res.send(result)
+    })
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
