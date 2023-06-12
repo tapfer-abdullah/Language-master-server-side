@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
 
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { status } = require("express/lib/response");
 const uri = `mongodb+srv://${process.env.LM_USER}:${process.env.LM_PASS}@cluster0.bna95n2.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -77,7 +78,7 @@ async function run() {
     })
 
     app.get("/courses", async (req, res) => {
-      const query = {};
+      const query = {status: "approved"};
       const cursor = LMCourses.find(query);
       const courses = await cursor.toArray();
       res.send(courses);
@@ -152,6 +153,26 @@ async function run() {
       const cursor = LMCourses.find(query);
       const classes = await cursor.toArray();
       res.send(classes);
+    })
+
+    // update status
+    app.patch("/class/:id", async(req, res)=>{
+      const id = req.params.id;
+      const status = req.body.status;
+      console.log(id, status)
+
+
+      const filter = { _id: new ObjectId(id)};
+      const options = { upsert: true };
+
+    const updateDoc = {
+      $set: {
+        status: status
+      },
+    };
+    const result = await LMCourses.updateOne(filter, updateDoc, options);
+    res.send(result)
+
     })
 
 
