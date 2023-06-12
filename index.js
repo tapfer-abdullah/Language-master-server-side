@@ -52,7 +52,7 @@ async function run() {
     const LMUserCarts = database.collection("LMUserCarts");
 
 
-    // users and instructors 
+    // user and instructors  regular route 
     app.get("/instructors", async (req, res) => {
       const query = {designation: "Instructor"};
       const cursor = LMInstructors.find(query);
@@ -114,6 +114,16 @@ async function run() {
       res.send(courses);
     })
 
+
+
+    // admin options 
+    app.get("/users", async (req, res) => {
+      const query = {};
+      
+      const cursor = LMInstructors.find(query);
+      const instructors = await cursor.toArray();
+      res.send(instructors);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
