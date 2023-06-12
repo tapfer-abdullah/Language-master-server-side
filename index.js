@@ -145,6 +145,17 @@ async function run() {
 
     })
 
+    // admin class 
+    app.get("/classes", async (req, res) => {
+      const query = {};
+
+      const cursor = LMCourses.find(query);
+      const classes = await cursor.toArray();
+      res.send(classes);
+    })
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
