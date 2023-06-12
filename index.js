@@ -119,10 +119,30 @@ async function run() {
     // admin options 
     app.get("/users", async (req, res) => {
       const query = {};
-      
+
       const cursor = LMInstructors.find(query);
       const instructors = await cursor.toArray();
       res.send(instructors);
+    })
+
+    // update role 
+    app.patch("/user/:email", async(req, res)=>{
+      const email = req.params.email;
+      const role = req.body.role;
+      // console.log(email, role)
+
+
+      const filter = { email: email};
+      const options = { upsert: true };
+
+    const updateDoc = {
+      $set: {
+        designation: role
+      },
+    };
+    const result = await LMInstructors.updateOne(filter, updateDoc, options);
+    res.send(result)
+
     })
 
     // Send a ping to confirm a successful connection
