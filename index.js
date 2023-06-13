@@ -72,6 +72,7 @@ async function run() {
     const LMInstructors = database.collection("LMInstructors");
     const LMCourses = database.collection("LMCourses");
     const LMUserCarts = database.collection("LMUserCarts");
+    const LMPaymentHistory = database.collection("LMPaymentHistory");
 
     // JWT 
     app.post("/jwt", (req, res) => {
@@ -368,7 +369,24 @@ async function run() {
 
       })
 
+      // payment history 
+      app.get("/payment-history/:email", async(req, res)=>{
+        const sortOP = req?.headers?.sort || 1;
+        // console.log(sortOP)
 
+        const cursor = LMPaymentHistory.find({email: req?.params?.email}).sort({ date: sortOP, time: sortOP });
+        const result = await cursor.toArray();
+        res.send(result)
+        console.log(result)
+      })
+
+      // add payment history 
+      app.post("/payment-history/:email", async (req, res) => {
+        const cart = req.body;
+        const result = await LMPaymentHistory.insertOne(cart);
+        // console.log(cart)
+        // res.send(result)
+      })
 
 
 
