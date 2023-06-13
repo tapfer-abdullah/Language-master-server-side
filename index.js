@@ -258,22 +258,43 @@ async function run() {
     })
 
 
+    // after payment update enrolled 
     app.patch("/course/:id", async (req, res) => {
       const id = req.params.id;
       const newClass = req.body;
       // console.log("new", newClass)
+      
+      const oldData = await LMCourses.findOne({_id: new ObjectId(id)})
+      const oldCart = await LMUserCarts.findOne({_id: new ObjectId(newClass.id)})
 
+      if(oldData.availableSeats == oldData.enrolled){
+        return res.send("No seat available");
+      }
+
+      const filterCart = { _id: new ObjectId(newClass.id) };
+      const optionsCart = { upsert: true };
+      const updateCart = {
+        $set: {
+          status: "paid"
+        },
+      };
+      const resultCart = await LMUserCarts.updateOne(filterCart, updateCart, optionsCart);
+      // res.send(resultCart)
+      // console.log(resultCart)
+
+      // console.log(oldData)
 
       const filter = { _id: new ObjectId(id) };
       const options = { upsert: true };
 
       const updateDoc = {
         $set: {
-          enrolled: newClass.enrolled
+          enrolled: oldData.enrolled+1
         },
       };
       const result = await LMCourses.updateOne(filter, updateDoc, options);
-      res.send(result)
+      res.send({result, resultCart})
+      // console.log(result)
     })
 
     app.patch("/course-feedback/:id", async (req, res) => {
@@ -346,8 +367,6 @@ async function run() {
 
 
       })
-
-
 
 
 
