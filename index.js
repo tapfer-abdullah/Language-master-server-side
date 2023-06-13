@@ -1,4 +1,6 @@
 
+
+
 const jwt = require('jsonwebtoken');
 const express = require("express");
 const cors = require("cors");
@@ -6,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 require('dotenv').config();
 // jwt = require('jsonwebtoken');
+const stripe = require("stripe")(process.env.LM_STRIPE_SECRET_KEY);
 
 
 // middle wares 
@@ -96,7 +99,7 @@ async function run() {
       }
 
       const result = await LMInstructors.insertOne(user);
-      console.log(user)
+      // console.log(user)
       res.send(result)
 
     })
@@ -120,7 +123,7 @@ async function run() {
     app.post("/course/:email", async (req, res) => {
       const cart = req.body;
       const result = await LMUserCarts.insertOne(cart);
-      console.log(cart)
+      // console.log(cart)
       res.send(result)
     })
 
@@ -134,6 +137,7 @@ async function run() {
     })
 
     app.get("/my-selected-course", verifyJWT, async (req, res) => {
+    // app.get("/my-selected-course", async (req, res) => {
       let query = req.query || {};
 
       // console.log(req.decoded.loggedUser.email);
@@ -196,7 +200,7 @@ async function run() {
     app.patch("/class/:id", async (req, res) => {
       const id = req.params.id;
       const status = req.body.status;
-      console.log(id, status)
+      // console.log(id, status)
 
 
       const filter = { _id: new ObjectId(id) };
@@ -215,7 +219,7 @@ async function run() {
     // -------------------------------------
     app.post("/add-class", async (req, res) => {
       const newClass = req.body;
-      console.log(newClass)
+      // console.log(newClass)
 
       const result = await LMCourses.insertOne(newClass);
       res.send(result);
@@ -228,14 +232,14 @@ async function run() {
 
       const result = await LMCourses.findOne(query)
       res.send(result);
-      // console.log(id, result)
+      // console.log("hit",id, result)
     })
 
     // update a class 
     app.patch("/update-class/:id", async (req, res) => {
       const id = req.params.id;
       const newClass = req.body;
-      console.log("new", newClass)
+      // console.log("new", newClass)
 
 
       const filter = { _id: new ObjectId(id) };
@@ -257,7 +261,7 @@ async function run() {
     app.patch("/course/:id", async (req, res) => {
       const id = req.params.id;
       const newClass = req.body;
-      console.log("new", newClass)
+      // console.log("new", newClass)
 
 
       const filter = { _id: new ObjectId(id) };
@@ -275,7 +279,7 @@ async function run() {
     app.patch("/course-feedback/:id", async (req, res) => {
       const id = req.params.id;
       const newClass = req.body;
-      console.log("new", newClass)
+      // console.log("new", newClass)
 
 
       const filter = { _id: new ObjectId(id) };
@@ -289,6 +293,63 @@ async function run() {
       const result = await LMCourses.updateOne(filter, updateDoc, options);
       res.send(result)
     })
+
+
+    //------------------
+    //-----find a user to know is he admin
+    //--------------------------
+    app.get("/check-user/:email", async(req, res)=>{
+      const email = req.params.email;
+      // console.log("email", email)
+
+      const query = {email: email}
+      const result = await LMInstructors.findOne(query)
+      res.send(result);
+    })
+
+    // single cart data 
+    app.get("/single-cart/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+
+      const result = await LMUserCarts.findOne(query)
+      res.send(result);
+      // console.log("hit",id, result)
+    })
+
+
+    //************************** */
+    //******---Stripe Payment intent---********* */
+    //************************** */
+
+    app.post("/create-payment-intent", async (req, res) => {
+      const { price } = req.body;
+      const amount = price;
+      if(!amount){
+        return res.status(404).send({error: true, message: "price not found!"})
+      }
+
+      // console.log(amount)
+    
+      // Create a PaymentIntent with the order amount and currency
+
+        const paymentIntent = await stripe.paymentIntents.create({
+          // amount: amount*100 ,
+          amount: parseInt(amount*100, 10),
+          currency: "usd",
+          payment_method_types: ['card']
+        });
+      
+        res.send({
+          clientSecret: paymentIntent.client_secret,
+        });
+
+
+      })
+
+
+
+
 
 
 
