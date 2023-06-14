@@ -188,6 +188,20 @@ async function run() {
 
     })
 
+    // instructor classes 
+    app.get("/classes/:email", async (req, res) => {
+      const email = req.params.email;
+      let query= {};
+      if(email){
+        query = {instructorMail: email};
+      }
+
+      const cursor = LMCourses.find(query);
+      const classes = await cursor.toArray();
+      res.send(classes);
+      console.log(email, classes)
+    })
+
     // admin class 
     app.get("/classes", async (req, res) => {
       const query = {};
@@ -371,7 +385,7 @@ async function run() {
 
       // payment history 
       app.get("/payment-history/:email", async(req, res)=>{
-        const sortOP = req?.headers?.sort || 1;
+        const sortOP = req?.headers?.sort || -1;
         // console.log(sortOP)
 
         const cursor = LMPaymentHistory.find({email: req?.params?.email}).sort({ date: sortOP, time: sortOP });
